@@ -487,27 +487,20 @@ export default class Grid {
 
     change_range() {
 
-        // TODO: better way to limit the view. Problem:
-        // when you are at the dead end of the data,
-        // and keep scrolling,
-        // the chart continues to scale down a little.
-        // Solution: I don't know yet
-
         if (!this.range.length || this.data.length < 2) return
 
         let l = this.data.length - 1
         let data = this.data
         let range = this.range
+        let diff = range[1] - range[0]
 
-        range[0] = Utils.clamp(
-            range[0],
-            -Infinity, data[l][0] - this.interval * 5.5,
-        )
-
-        range[1] = Utils.clamp(
-            range[1],
-            data[0][0] + this.interval * 5.5, Infinity
-        )
+        if(range[0] > data[l][0] - this.interval * 5.5) {
+            range[0] = data[l][0] - this.interval * 5.5
+            range[1] = range[0] + diff
+        } else if(range[1] < data[0][0] + this.interval * 5.5) {
+            range[1] = data[0][0] + this.interval * 5.5
+            range[0] = range[1] - diff
+        }
 
         // TODO: IMPORTANT scrolling is jerky The Problem caused
         // by the long round trip of 'range-changed' event.
