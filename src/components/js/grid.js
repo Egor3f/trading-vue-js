@@ -383,13 +383,11 @@ export default class Grid {
             this.trackpad_scroll(event)
         }
 
-        if (this.trackpad) delta *= 0.032
-
-        delta = Utils.smart_wheel(delta)
-
-        // TODO: mouse zooming is a little jerky,
-        // needs to follow f(mouse_wheel_speed) and
-        // if speed is low, scroll shoud be slower
+        if (this.trackpad) {
+            delta = event.originalEvent.deltaY * 3
+        } else {
+            delta = Utils.smart_wheel(delta)
+        }
         if (delta < 0 && this.data.length <= this.MIN_ZOOM) return
         if (delta > 0 && this.data.length > this.MAX_ZOOM) return
         let k = this.interval / 1000
