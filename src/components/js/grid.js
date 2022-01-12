@@ -381,6 +381,7 @@ export default class Grid {
                 delta *= 0.1
             }
             this.trackpad_scroll(event)
+            return
         }
 
         if (this.trackpad) {
